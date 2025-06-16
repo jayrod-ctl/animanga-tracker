@@ -7,17 +7,33 @@
   <title>AniManga Tracker</title>
   <style>
     body {
-      background-color: #121212;
-      color: #ffffff;
+      background: #121212;
+      color: white;
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 1rem;
     }
-
     h1 {
       margin-bottom: 1rem;
     }
-
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .tab {
+      flex: 1;
+      padding: 0.75rem;
+      text-align: center;
+      background: #1e1e1e;
+      border-radius: 0.25rem;
+      cursor: pointer;
+    }
+    .tab.active {
+      background: #00bcd4;
+      color: black;
+      font-weight: bold;
+    }
     input, textarea {
       width: 100%;
       margin: 0.5rem 0;
@@ -28,7 +44,6 @@
       border-radius: 0.25rem;
       color: white;
     }
-
     button {
       background: #00bcd4;
       color: black;
@@ -38,11 +53,9 @@
       font-size: 1rem;
       cursor: pointer;
     }
-
     button:hover {
       background: #00acc1;
     }
-
     .entry {
       display: flex;
       align-items: flex-start;
@@ -52,58 +65,48 @@
       margin: 0.5rem 0;
       cursor: pointer;
     }
-
     .entry img {
       width: 50px;
       height: auto;
       margin-right: 1rem;
       border-radius: 0.25rem;
     }
-
     .entry-title {
       font-weight: bold;
       font-size: 1.1rem;
       margin-top: 0.2rem;
     }
-
     .hidden {
       display: none;
     }
-
     .detail-view {
       background: #1e1e1e;
       border-radius: 0.5rem;
       padding: 1rem;
       margin-top: 1rem;
     }
-
     .detail-header {
       display: flex;
       gap: 1rem;
       align-items: flex-start;
     }
-
     .detail-header img {
       width: 100px;
       border-radius: 0.5rem;
     }
-
     .detail-body {
       margin-top: 1rem;
     }
-
     .checklist-item {
       display: flex;
       align-items: center;
       gap: 0.5rem;
       margin: 0.25rem 0;
     }
-
     .checklist-item input[type="checkbox"] {
       width: 18px;
       height: 18px;
     }
-
     .checklist-item input[type="text"] {
       flex: 1;
       padding: 0.4rem;
@@ -116,6 +119,11 @@
 </head>
 <body>
   <h1>AniManga Tracker</h1>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('anime')">Anime</div>
+    <div class="tab" onclick="switchTab('manga')">Manga</div>
+  </div>
+
   <div id="main-view">
     <input id="title" placeholder="Title" />
     <textarea id="thoughts" placeholder="Your thoughts..."></textarea>
@@ -127,16 +135,31 @@
   <div id="detail-view" class="hidden"></div>
 
   <script>
-    let entries = JSON.parse(localStorage.getItem('entries') || '[]');
+    let activeTab = 'anime';
+    let data = {
+      anime: JSON.parse(localStorage.getItem('anime_entries') || '[]'),
+      manga: JSON.parse(localStorage.getItem('manga_entries') || '[]')
+    };
 
-    function saveEntries() {
-      localStorage.setItem('entries', JSON.stringify(entries));
+    function saveData() {
+      localStorage.setItem('anime_entries', JSON.stringify(data.anime));
+      localStorage.setItem('manga_entries', JSON.stringify(data.manga));
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab')[tab === 'anime' ? 0 : 1].classList.add('active');
+      document.getElementById('title').value = '';
+      document.getElementById('thoughts').value = '';
+      document.getElementById('image').value = '';
+      renderEntries();
     }
 
     function renderEntries() {
       const container = document.getElementById('entries');
       container.innerHTML = '';
-      entries.forEach((entry, i) => {
+      data[activeTab].forEach((entry, i) => {
         const div = document.createElement('div');
         div.className = 'entry';
         div.onclick = () => openDetailView(i);
@@ -151,8 +174,8 @@
       const thoughts = document.getElementById('thoughts').value.trim();
       const image = document.getElementById('image').value.trim();
       if (!title) return;
-      entries.push({ title, thoughts, image, checklist: [] });
-      saveEntries();
+      data[activeTab].push({ title, thoughts, image, checklist: [] });
+      saveData();
       renderEntries();
       document.getElementById('title').value = '';
       document.getElementById('thoughts').value = '';
@@ -160,7 +183,7 @@
     }
 
     function openDetailView(index) {
-      const entry = entries[index];
+      const entry = data[activeTab][index];
       const container = document.getElementById('detail-view');
       document.getElementById('main-view').classList.add('hidden');
       container.classList.remove('hidden');
@@ -190,26 +213,26 @@
     }
 
     function toggleCheck(entryIdx, itemIdx) {
-      entries[entryIdx].checklist[itemIdx].checked = !entries[entryIdx].checklist[itemIdx].checked;
-      saveEntries();
+      data[activeTab][entryIdx].checklist[itemIdx].checked = !data[activeTab][entryIdx].checklist[itemIdx].checked;
+      saveData();
       openDetailView(entryIdx);
     }
 
     function renameCheck(entryIdx, itemIdx, newValue) {
-      entries[entryIdx].checklist[itemIdx].text = newValue;
-      saveEntries();
+      data[activeTab][entryIdx].checklist[itemIdx].text = newValue;
+      saveData();
     }
 
     function addCheckItem(entryIdx) {
-      entries[entryIdx].checklist.push({ text: '', checked: false });
-      saveEntries();
+      data[activeTab][entryIdx].checklist.push({ text: '', checked: false });
+      saveData();
       openDetailView(entryIdx);
     }
 
     function deleteEntry(index) {
       if (!confirm('Delete this entry?')) return;
-      entries.splice(index, 1);
-      saveEntries();
+      data[activeTab].splice(index, 1);
+      saveData();
       backToMain();
     }
 
