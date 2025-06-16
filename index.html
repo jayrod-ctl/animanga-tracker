@@ -2,185 +2,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>AniManga Tracker</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="AniManga Tracker">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon.png">
-    <style>
-        body {
-            background-color: #121212;
-            color: #f0f0f0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-            margin: 0;
-            padding: env(safe-area-inset-top) 1rem env(safe-area-inset-bottom);
-            box-sizing: border-box;
-        }
-        h1 {
-            text-align: center;
-            margin: 1rem 0 0.5rem;
-            font-size: 1.8rem;
-        }
-        .tabs {
-            display: flex;
-            justify-content: center;
-            background-color: #1e1e1e;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            overflow: hidden;
-        }
-        .tab {
-            padding: 1rem;
-            cursor: pointer;
-            flex: 1;
-            text-align: center;
-            background-color: #1e1e1e;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s;
-        }
-        .tab.active {
-            border-bottom: 3px solid #00bcd4;
-            background-color: #222;
-        }
-        .content {
-            padding: 0 1rem;
-        }
-        input, textarea, button {
-            width: 100%;
-            margin: 0.5rem 0;
-            padding: 0.75rem;
-            font-size: 1rem;
-            border-radius: 0.5rem;
-            background: #1f1f1f;
-            color: #f0f0f0;
-            border: 1px solid #333;
-        }
-        button {
-            background-color: #00bcd4;
-            color: #000;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .entry {
-            border: 1px solid #333;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            margin: 0.5rem 0;
-            background-color: #1a1a1a;
-        }
-        .entry strong {
-            display: block;
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
-        }
-        .entry em {
-            display: block;
-            font-size: 0.9rem;
-            margin-bottom: 0.25rem;
-            color: #aaa;
-        }
-    
-        .entry-buttons {
-            margin-top: 0.5rem;
-            display: flex;
-            gap: 0.5rem;
-        }
-        .entry-buttons button {
-            flex: 1;
-            font-size: 0.8rem;
-            padding: 0.5rem;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>AniManga Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AniManga Tracker">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.png">
+  <style>
+    body {
+      background-color: #121212;
+      color: #f0f0f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      margin: 0;
+      padding: env(safe-area-inset-top) 1rem env(safe-area-inset-bottom);
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-top: 1rem;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      background-color: #1e1e1e;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .tab {
+      padding: 1rem;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+      background-color: #1e1e1e;
+      border-bottom: 3px solid transparent;
+    }
+    .tab.active {
+      border-bottom: 3px solid #00bcd4;
+      background-color: #222;
+    }
+    .content {
+      padding: 0 1rem;
+    }
+    input, textarea, button {
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+      background: #1f1f1f;
+      color: #f0f0f0;
+      border: 1px solid #333;
+    }
+    button {
+      background-color: #00bcd4;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .entry {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      border: 1px solid #333;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      margin: 0.5rem 0;
+      background-color: #1a1a1a;
+    }
+    .entry img {
+      width: 60px;
+      height: auto;
+      border-radius: 0.25rem;
+      object-fit: cover;
+    }
+    .entry-content {
+      flex: 1;
+    }
+    .entry-content strong {
+      font-size: 1.1rem;
+      display: block;
+    }
+    .entry-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .entry-buttons button {
+      flex: 1;
+      font-size: 0.8rem;
+      padding: 0.5rem;
+    }
+    #search {
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+      background: #1f1f1f;
+      color: #f0f0f0;
+      border: 1px solid #333;
+    }
+  </style>
 </head>
 <body>
-    <h1>AniManga Tracker</h1>
-    <div class="tabs">
-        <div class="tab active" onclick="switchTab('anime')">Anime</div>
-        <div class="tab" onclick="switchTab('manga')">Manga</div>
-    </div>
-    <div class="content">
-        <h2 id="form-title">Add Anime</h2>
-        <input type="text" id="title" placeholder="Title">
-        <textarea id="thoughts" placeholder="Your thoughts..."></textarea>
-        <input type="text" id="image" placeholder="Image URL (optional)">
-        <input type="date" id="date">
-        <button onclick="addEntry()">Add Entry</button>
-        <div id="entries"></div>
-    </div>
-    <script>
-        let currentTab = 'anime';
+  <h1>AniManga Tracker</h1>
+  <input type="text" id="search" placeholder="Search entries..." oninput="loadEntries()">
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('anime')">Anime</div>
+    <div class="tab" onclick="switchTab('manga')">Manga</div>
+  </div>
+  <div class="content">
+    <h2 id="form-title">Add Anime</h2>
+    <input type="text" id="title" placeholder="Title">
+    <textarea id="thoughts" placeholder="Your thoughts..."></textarea>
+    <input type="text" id="image" placeholder="Image URL (optional)">
+    <button id="add-btn" onclick="addEntry()">Add Entry</button>
+    <div id="entries"></div>
+  </div>
 
-        function getKey() {
-            return currentTab + '_entries';
-        }
+  <script>
+    let currentTab = 'anime';
+    let editingIndex = -1;
 
-        
-        function editEntry(index) {
-            const entries = JSON.parse(localStorage.getItem(getKey()) || '[]');
-            const entry = entries[index];
-            document.getElementById('title').value = entry.title;
-            document.getElementById('thoughts').value = entry.thoughts;
-            document.getElementById('image').value = entry.image || '';
-            document.getElementById('date').value = entry.date;
-            editingIndex = index;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+    function getKey() {
+      return currentTab + '_entries';
+    }
 
-        function loadEntries() {
-    
-            const container = document.getElementById('entries');
-            container.innerHTML = '';
-            const entries = JSON.parse(localStorage.getItem(getKey()) || '[]');
-            entries.forEach((entry, index) => {
-                const div = document.createElement('div');
-                div.className = 'entry';
-                div.innerHTML = 
-                (entry.image ? '<img src="' + entry.image + '" style="width:100%;border-radius:0.5rem;margin-bottom:0.5rem;">' : '') +
-                '<strong>' + entry.title + '</strong><em>' + entry.date + '</em>' + entry.thoughts;
-                const buttons = document.createElement('div');
-            buttons.className = 'entry-buttons';
-            buttons.innerHTML = '<button onclick="editEntry(' + index + ')">Edit</button>';
-            div.appendChild(buttons);
-            container.appendChild(div);
-            });
-        }
+    function loadEntries() {
+      const query = document.getElementById('search').value.toLowerCase();
+      const container = document.getElementById('entries');
+      container.innerHTML = '';
+      const entries = JSON.parse(localStorage.getItem(getKey()) || '[]');
+      entries.forEach((entry, index) => {
+        if (!entry.title.toLowerCase().includes(query) && !entry.thoughts.toLowerCase().includes(query)) return;
+        const div = document.createElement('div');
+        div.className = 'entry';
+        const img = entry.image ? `<img src="${entry.image}" onerror="this.style.display='none';">` : '';
+        const content = `<div class="entry-content"><strong>${entry.title}</strong>${entry.thoughts}</div>`;
+        const buttons = `
+          <div class="entry-buttons">
+            <button onclick="editEntry(${index})">Edit</button>
+            <button onclick="deleteEntry(${index})">Delete</button>
+          </div>`;
+        div.innerHTML = img + content + buttons;
+        container.appendChild(div);
+      });
+    }
 
-        let editingIndex = -1;
-        function addEntry() {
-            const title = document.getElementById('title').value;
-            const thoughts = document.getElementById('thoughts').value;
-            const image = document.getElementById('image').value;
-            const date = document.getElementById('date').value || new Date().toISOString().split('T')[0];
-            if (!title) return;
-            const entries = JSON.parse(localStorage.getItem(getKey()) || '[]');
-            if (editingIndex >= 0) {
-                entries[editingIndex] = { title, thoughts, date, image };
-                editingIndex = -1;
-            } else {
-                entries.unshift({ title, thoughts, date, image });
-            }
-            localStorage.setItem(getKey(), JSON.stringify(entries));
-            document.getElementById('title').value = ''; document.getElementById('thoughts').value = ''; document.getElementById('image').value = ''; document.getElementById('date').value = '';
-            document.getElementById('thoughts').value = '';
-            document.getElementById('image').value = '';
-            document.getElementById('date').value = '';
-            loadEntries();
-        }
+    function addEntry() {
+      const title = document.getElementById('title').value.trim();
+      const thoughts = document.getElementById('thoughts').value.trim();
+      const image = document.getElementById('image').value.trim();
+      if (!title) return;
+      let entries = JSON.parse(localStorage.getItem(getKey()) || '[]');
+      if (editingIndex >= 0) {
+        entries[editingIndex] = { title, thoughts, image };
+        editingIndex = -1;
+        document.getElementById('add-btn').textContent = 'Add Entry';
+      } else {
+        entries.unshift({ title, thoughts, image });
+      }
+      localStorage.setItem(getKey(), JSON.stringify(entries));
+      document.getElementById('title').value = '';
+      document.getElementById('thoughts').value = '';
+      document.getElementById('image').value = '';
+      loadEntries();
+    }
 
-        function switchTab(tab) {
-            currentTab = tab;
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab').forEach(t => {
-                if (t.textContent.toLowerCase() === tab) t.classList.add('active');
-            });
-            document.getElementById('form-title').textContent = 'Add ' + (tab === 'anime' ? 'Anime' : 'Manga');
-            loadEntries();
-        }
+    function deleteEntry(index) {
+      let entries = JSON.parse(localStorage.getItem(getKey()) || '[]');
+      entries.splice(index, 1);
+      localStorage.setItem(getKey(), JSON.stringify(entries));
+      loadEntries();
+    }
 
-        loadEntries();
-    </script>
+    function editEntry(index) {
+      const entries = JSON.parse(localStorage.getItem(getKey()) || '[]');
+      const entry = entries[index];
+      document.getElementById('title').value = entry.title;
+      document.getElementById('thoughts').value = entry.thoughts;
+      document.getElementById('image').value = entry.image || '';
+      editingIndex = index;
+      document.getElementById('add-btn').textContent = 'Save Entry';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => {
+        if (t.textContent.toLowerCase() === tab) t.classList.add('active');
+      });
+      document.getElementById('form-title').textContent = 'Add ' + (tab === 'anime' ? 'Anime' : 'Manga');
+      document.getElementById('add-btn').textContent = 'Add Entry';
+      editingIndex = -1;
+      loadEntries();
+    }
+
+    loadEntries();
+  </script>
 </body>
 </html>
+
