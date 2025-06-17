@@ -10,6 +10,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="icon.png">
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       background: #121212;
       color: white;
@@ -36,10 +39,12 @@
       color: black;
       font-weight: bold;
     }
+    .input-wrapper {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
     input, textarea {
-      width: 98%;
-      max-width: 800px;
-      box-sizing: border-box;
+      width: 100%;
       margin: 0.4rem 0;
       padding: 0.6rem;
       font-size: 1rem;
@@ -130,9 +135,11 @@
   </div>
 
   <div id="main-view">
-    <input id="title" placeholder="Title" />
-    <textarea id="thoughts" placeholder="Your thoughts..."></textarea>
-    <input id="image" placeholder="Image URL (optional)" />
+    <div class="input-wrapper">
+      <input id="title" placeholder="Title" />
+      <textarea id="thoughts" placeholder="Your thoughts..."></textarea>
+      <input id="image" placeholder="Image URL (optional)" />
+    </div>
     <button onclick="addEntry()">Add Entry</button>
     <div id="entries"></div>
   </div>
